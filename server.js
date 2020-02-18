@@ -11,7 +11,7 @@ const typeDefs = gql`
     amount: Float
   }
   type Query {
-    rep_typeOfProcedure: typeOfProcedure
+    rep_typeOfProcedure: [typeOfProcedure]
   }
 `;
 
@@ -44,8 +44,15 @@ const resolvers = {
       try {
         const graphQLClient = new GraphQLClient(endpoint);
         const data = await graphQLClient.request(query);
-
-        return data2;
+        const tramites = null;
+        data.forEach(servicio => {
+          servicio.forEach(tramite => {
+            if (tramites.includes(tramite) == false) {
+              tramites.push(tramite);
+            }
+          });
+        });
+        return tramites;
       } catch (e) {
         console.log(e);
         return null;
