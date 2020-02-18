@@ -1,0 +1,16 @@
+{
+  "name": "customlogic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.10.1",
+    "graphql-request": "^1.8.2",
+    "graphql-tag": "^2.10.3"
+  }
+}
