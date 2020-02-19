@@ -15,7 +15,7 @@ const typeDefs = gql`
     Monto: Float
   }
   type Query {
-    rep_tiposTramite: [objResTramites]
+    rep_tiposTramite(fechaInicio: String!, fechaFin: String!): [objResTramites]
   }
 `;
 
