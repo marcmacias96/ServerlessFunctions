@@ -1,55 +1,58 @@
 const { ApolloServer } = require("apollo-server");
 const gql = require("graphql-tag");
 const { GraphQLClient } = require("graphql-request");
-
+const { tiposTramite } = require('./querys/typesOfProcedure')
 const endpoint = "http://192.168.103.34:8080/v1/graphql";
 
 const typeDefs = gql`
-  type typeOfProcedure {
-    type: String
-    count: Int
-    amount: Float
+  type typoDeTramite {
+    NombreHistorico: String
+    Cantidad: Int
+    Monto: Float
   }
   type Query {
-    rep_typeOfProcedure: [typeOfProcedure]
+    rep_tiposTramite: [typoDeTramite]
   }
 `;
 
-const query = `
-  query MyQuery {
-    OrdenTrabajo_Cabecera(
-      where: {
-        FechaOT: { _lt: "2018-11-13 00:00:00", _gt: "2018-10-13 00:00:00" }
-      }
-    ) {
-      OrdenTrabajo_Detalles {
-        TipoServicio {
-          TipoTramites_aggregate(
-            where: { NombreHistorico: { _is_null: false } }
-          ) {
-            nodes {
-              NombreHistorico
-              Monto
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+
 
 const resolvers = {
   Query: {
-    rep_typeOfProcedure: async (parent, args, context) => {
+    rep_tiposTramite: async (parent, args, context) => {
       try {
+        const { fechaInicio, fechaFin } = args
+        const variables = {
+          fechaInicio,
+          fechaFin
+        }
         const graphQLClient = new GraphQLClient(endpoint);
-        const data = await graphQLClient.request(query);
-        const tramites = null;
-        data.forEach(servicio => {
-          servicio.forEach(tramite => {
-            if (tramites.includes(tramite) == false) {
-              tramites.push(tramite);
-            }
+        const data = await graphQLClient.request(tiposTramite, variables);
+        var tramites = null;
+        data.OrdenTrabajo_Cabecera.forEach(detalles => {
+          detalles.OrdenTrabajo_Detalles.forEach(servicio=>{
+            servicio.TipoServicio.TipoTramites_aggregate.nodes.forEach(tramite=>{
+              var auxiliar={};
+              auxiliar.NombreHistorico= tramite.NombreHistorico;
+              auxiliar.Cantidad=1;
+              auxiliar.Monto= tramite.Monto;
+              if(tramites==null){
+                tramites=[];
+                tramites.push(auxiliar);
+              }else{
+                var found=false;
+                tramites.forEach(tramite_salida=>{
+                  if (tramite_salida.NombreHistorico==auxiliar.NombreHistorico) {
+                    tramite_salida.Cantidad++;
+                    tramite_salida.Monto+=auxiliar.Monto;
+                    found=true;
+                  }
+                });
+                if(found==false){
+                  tramites.push(auxiliar);
+                }
+              }
+            });
           });
         });
         return tramites;
