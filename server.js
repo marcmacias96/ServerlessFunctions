@@ -32,12 +32,18 @@ const resolvers = {
         const graphQLClient = new GraphQLClient(endpoint);
         const data = await graphQLClient.request(tiposTramite, variables);
         var tramites = null;
+        var total= {};
+        total.DscaTipoTramite='Total';
+        total.Cantidad=0;
+        total.Monto=0;
         data.OrdenTrabajo_Cabecera.forEach(detalles => {
           detalles.OrdenTrabajo_Detalles.forEach(detalle=>{
             var auxiliar={};
             auxiliar.DscaTipoTramite= detalle.TipoTramite.DscaTipoTramite;
             auxiliar.Cantidad=1;
             auxiliar.Monto= detalle.AmountInvoiced;
+            total.Cantidad++;
+            total.Monto+=auxiliar.Monto;
             if(tramites==null){
               tramites=[];
               tramites.push(auxiliar);
@@ -57,6 +63,7 @@ const resolvers = {
             }
           });
         });
+        tramites.push(total);
         return tramites;
       } catch (e) {
         console.log(e);
