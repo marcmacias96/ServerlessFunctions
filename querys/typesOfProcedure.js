@@ -1,7 +1,7 @@
 module.exports = {
-    tiposTramite : `query rep_tipoTramite($fechaInicio: timestamp!, $fechaFin: timestamp!, $title: String, $order: order_by!) {
-      OrdenTrabajo_Cabecera(where: {FechaOT: {_lt: $fechaFin, _gt: $fechaInicio}, Estado: {_gt: 2, _lt:8}}) {
-        OrdenTrabajo_Detalles(where: {TipoServicio: {TpServicio: {_neq: "ZERROR"}}, TipoTramite: {DscaTipoTramite: {_ilike: $title}}}, order_by: {TipoTramite: {DscaTipoTramite: $order}}) {
+    tiposTramite : `query rep_tipoTramite($fechaInicio: timestamp!, $fechaFin: timestamp!) {
+      OrdenTrabajo_Cabecera(where: {FechaOT: {_lt: $fechaFin, _gt: $fechaInicio}, Estado: {_gt: 2, _lt: 8}, _not: {Estado: {_eq: 4}}, OrdenPostPago: {_eq: false}}) {
+        OrdenTrabajo_Detalles {
           TipoTramite {
             DscaTipoTramite
           }
