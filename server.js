@@ -11,7 +11,7 @@ const typeDefs = gql`
     Monto: Float
   }
   type Query {
-    rep_tiposTramite (fechaInicio: String!, fechaFin: String!): [typoDeTramite]
+    rep_tiposTramite (fechaInicio: String!, fechaFin: String!, $title: String, $order: order_by!): [typoDeTramite]
   }
 `;
 
@@ -21,11 +21,17 @@ const resolvers = {
   Query: {
     rep_tiposTramite: async (parent, args, context) => {
       try {
+<<<<<<< HEAD
         console.log(args);
         const { fechaInicio, fechaFin } = args
+=======
+        const { fechaInicio, fechaFin, title, order } = args
+>>>>>>> bd8144f7e32f053c891c541f1b723eb0108c7707
         const variables = {
           fechaInicio,
-          fechaFin
+          fechaFin,
+          title,
+          order
         }
         const graphQLClient = new GraphQLClient(endpoint);
         const data = await graphQLClient.request(tiposTramite, variables);
