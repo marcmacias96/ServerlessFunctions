@@ -2,7 +2,7 @@ const { ApolloServer } = require("apollo-server");
 const gql = require("graphql-tag");
 const { GraphQLClient } = require("graphql-request");
 const { tiposTramite } = require('./querys/typesOfProcedure')
-const endpoint = "http://192.168.103.34:8080/v1/graphql";
+const endpoint = "http://192.168.105.34:8080/v1/graphql";
 
 const typeDefs = gql`
   type typoDeTramite {
@@ -21,7 +21,12 @@ const resolvers = {
   Query: {
     rep_tiposTramite: async (parent, args, context) => {
       try {
+<<<<<<< HEAD
+        console.log(args);
+        const { fechaInicio, fechaFin } = args
+=======
         const { fechaInicio, fechaFin, title, order } = args
+>>>>>>> bd8144f7e32f053c891c541f1b723eb0108c7707
         const variables = {
           fechaInicio,
           fechaFin,
