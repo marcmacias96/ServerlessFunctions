@@ -21,7 +21,7 @@ const resolvers = {
   Query: {
     rep_tiposTramite: async (parent, args, context) => {
       try {
-        const { fechaInicio, fechaFin, title, order } = args
+        var { fechaInicio, fechaFin, title, order } = args
         title = '%'+title+'%'
         const variables = {
           fechaInicio,
