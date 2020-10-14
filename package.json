@@ -11,7 +11,8 @@
   "dependencies": {
     "apollo-server": "^2.10.1",
     "graphql-request": "^1.8.2",
-    "graphql-tag": "^2.10.3"
+    "graphql-tag": "^2.10.3",
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "morgan": "^1.9.1"
