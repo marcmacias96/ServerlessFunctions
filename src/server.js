@@ -2,7 +2,7 @@ const { ApolloServer } = require("apollo-server");
 const gql = require("graphql-tag");
 const { GraphQLClient } = require("graphql-request");
 const { TiposServicios, DetallesTareas, DetallesExcel, eliminarLinderos,mutacion } = require('../src/querys/querys')
-const endpoint = "http://192.168.105.34:8080/v1/graphql"
+const endpoint = "http://192.168.104.200:8080/v1/graphql"
 const moment = require("../node_modules/moment")
 const typeDefs = gql`
   type typeOfService {
